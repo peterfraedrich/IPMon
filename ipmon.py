@@ -147,7 +147,7 @@ def dnslookup():
 def notify(url, newip, oldip, event):
 
 	if event == 'ping':
-		message = "Server " + url + " at " + newip + " is not responding." + "\n" + "TIMESTAMP: " + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+		message = "Server " + url + " at " + newip + " is not responding." + "\n\n" + "TIMESTAMP: " + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 		subject = url + " is not responding."
 		# do the email message thing
 		sendEmail(message, subject)
@@ -156,7 +156,7 @@ def notify(url, newip, oldip, event):
 		print msg
 
 	if event == 'change':
-		message = "Server " + url + " has new IP at " + newip + ". Old IP was " + oldip + "\n" + "TIMESTAMP: " + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+		message = "Server " + url + " has new IP at " + newip + ". \nOld IP was " + oldip + "\n\n" + "TIMESTAMP: " + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 		subject = url + " has a new IP address."
 		#do the email message thing
 		sendEmail(message, subject)
@@ -166,7 +166,7 @@ def notify(url, newip, oldip, event):
 		print msg
 
 	if event == 'resolve':
-		message = "Server " + url + " could not be resolved" + "\n" + "TIMESTAMP: " + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+		message = "Server " + url + " could not be resolved" + "\n\n" + "TIMESTAMP: " + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 		subject = url + " could not be resolved."
 		#do the email message thing
 		sendEmail(message, subject)
