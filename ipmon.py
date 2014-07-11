@@ -136,7 +136,7 @@ def dnslookup():
 			if server_list[i][0] != server_list[i][1]:
 				#if server_list[i][1] != '':
 				notify(i, server_list[i][0], server_list[i][1], 'change')
-				msg = ' DNS WARN -- domain ' + i + 'changed IP address to ' + server_list[i][0]
+				msg = ' DNS WARN -- domain ' + i + ' changed IP address to ' + server_list[i][0]
 				logadd(msg)
 				print msg
 						
@@ -182,12 +182,13 @@ def sendEmail(text, subject):
 
 	sender = 'alerts@networkmgmt.com'
 	recievers = [recipiants]
+	print recievers
 
-	message = """From: IP Alerts <alerts@networkmgmt.com>
+	message = """From: DNS Alerts <dnsalerts@networkmgmt.com>
 	To: alerts@networkmgmt.com
 	Subject: """ + subject + """
-
-	""" + text + """ """
+	"""
+	+ text + """ """
 
 	try:
 		smtpObj = smtplib.SMTP('localhost') 
@@ -228,7 +229,6 @@ def serviceMain():
 
 		lastrun = int(datetime.datetime.now().strftime('%m%d')) # set date for last time this ran
 		lognew()
-		refresh()
 
 		x = True # make sure loops runs
 
