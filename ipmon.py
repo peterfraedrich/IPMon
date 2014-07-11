@@ -87,7 +87,7 @@ def checkAlive():
 
 	logadd('INFO -- began checking servers')
 	for i in server_list:
-		ip = server_list[i][1]
+		ip = server_list[i][0]
 		print ip
 		response = system('ping -W 100 -c 3 ' + ip) # + " > /dev/null 2>&1")
         if response == 0:
