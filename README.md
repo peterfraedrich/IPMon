@@ -1,7 +1,7 @@
 <h1>IPMon<h1>
 a simple Python IP monitor and notifier
 
-<p>IPMon has four main modes:
+<p>IPMon has three main modes:
   <ul><li>Waiting</li>
       <li>DNS Lookup</li>
       <li>Notifying</li></ul></p>
@@ -11,7 +11,7 @@ a simple Python IP monitor and notifier
   <h2>DNS Lookup</h2>
   <p>IPMon will perform a DNS lookup of your servers and determine if the IP has changed since the last check. If so, it will invoke the notify state. For DNS lookups, IPMon uses your local DNS config.</p>
   <h2>Notifying</h2>
-  <p>IPMon uses a simple SMTP subprocess to send a notification email to the recipiants listed in the recipiants file. Additioanlly, any errors will be reported on the console, and all activity will be logged in the logfile.</p>
+  <p>IPMon uses a simple SMTP subprocess to send a notification email to the recipiants listed in the recipiants file. Additioanlly, any errors will be reported on the console, and all activity will be logged in the logfile. You can use a simple SMTP server installed on the same server as IPMon (like sendmail or postfix), or you can use any other SMTP server you wish that allows sending without authentication. Unfortunately, at this time, authenticated SMTP is not supported.</p>
 
   <h1>Install Instructions</h1>
   <ol><li>clone the git repo into root (/)</li>
