@@ -1,6 +1,4 @@
 <h1>IPMon<h1>
-=====
-
 a simple Python IP monitor and notifier
 
 <p>IPMon has four main modes:
