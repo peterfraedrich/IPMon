@@ -181,7 +181,7 @@ def sendEmail(text, subject):
 	importRecipiants()
 
 	sender = 'alerts@networkmgmt.com'
-	recievers = [recipiants]
+	recievers = recipiants
 	print recievers
 
 	message = """From: DNS Alerts <dnsalerts@networkmgmt.com>
