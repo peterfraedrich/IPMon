@@ -108,14 +108,14 @@ def dnslookup():
 			ip = socket.gethostbyname(i)
 			oldip = server_list[i][1]
 			server_list[i][0] = ip
+			msg = 'INFO -- ' + i + ' resolves to ' + ip 
+			logfile(msg)
 			if server_list[i][0] != server_list[i][1]:
 				if server_list[i][1] != '':
 					notify(i, server_list[i][0], server_list[i][1], 'change')
 					msg = 'WARN -- domain ' + i + 'changed IP address to ' + server_list[i][0]
 					logadd(msg)
-			else:
-				msg = 'INFO -- ' + i + ' resolves to ' + ip 
-				logfile(msg)
+							
 		except:
 			notify(i, 'null', 'null', 'resolve')
 			
