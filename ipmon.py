@@ -187,8 +187,8 @@ def sendEmail(text, subject):
 	message = """From: DNS Alerts <dnsalerts@networkmgmt.com>
 	To: alerts@networkmgmt.com
 	Subject: """ + subject + """
-	"""
-	+ text + """ """
+	
+	"""	+ text + """ """
 
 	try:
 		smtpObj = smtplib.SMTP('localhost') 
