@@ -94,7 +94,7 @@ def checkAlive():
 			logadd(msg)
 			print msg
 
-		except subprocess.CalledProcessError:
+		except: #subprocess.CalledProcessError:
 			server_list[i][2] = 'down'
 			notify(i, server_list[i][0], server_list[i][1], 'ping')
 			msg = 'PING CHECK -- domain ' + i + ' is DOWN.'
