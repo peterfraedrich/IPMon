@@ -86,20 +86,34 @@ def checkAlive():
 
 	logadd('INFO -- began checking servers')
 	for i in server_list:
-		try:
-			ping = subprocess.Popen(["ping", "-n", "3", server_list[i][1]], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-			out, error = ping.communicate()
-			server_list[i][2] = 'up'
+		response = os.system("ping -W 100 -c 3 " + server_list[i][1] + " > /dev/null 2>&1")
+        if response == 0:
+    	    server_list[i][2] = 'up'
 			msg = 'PING CHECK -- domain ' + i + ' is UP.'
 			logadd(msg)
-			print msg
-
-		except: #subprocess.CalledProcessError:
-			server_list[i][2] = 'down'
+			print msg        
+        else:
+        	server_list[i][2] = 'down'
 			notify(i, server_list[i][0], server_list[i][1], 'ping')
 			msg = 'PING CHECK -- domain ' + i + ' is DOWN.'
 			logadd(msg)
 			print msg
+            
+
+	#	try:
+	#		ping = subprocess.Popen(["ping", "-n", "3", server_list[i][1]], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	#		out, error = ping.communicate()
+	#		server_list[i][2] = 'up'
+	#		msg = 'PING CHECK -- domain ' + i + ' is UP.'
+	#		logadd(msg)
+	#		print msg
+	#
+	#	except: #subprocess.CalledProcessError:
+	#		server_list[i][2] = 'down'
+	#		notify(i, server_list[i][0], server_list[i][1], 'ping')
+	#		msg = 'PING CHECK -- domain ' + i + ' is DOWN.'
+	#		logadd(msg)
+	#		print msg
 
 
 def dnslookup():
