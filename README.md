@@ -22,9 +22,9 @@ a simple Python IP monitor and notifier
   <ol><li>clone the git repo into root (/)</li>
   <br># git clone https://github.com/peterfraedrich/IPMon.git
   <li>install sendmail<br># yum install -y sendmail</li>
-  <li>configure sendmail<br>in /etc/mail/sendmail.mc<ul>  
-  <li>change 'dnl MASQUERADE_AS('yourdomain.com')dnl to the domain of your mail server</li>
-  <li>delete 'localhost' in 'DAEMON_OPTIONS('Port=smtp, Name=MTA')dnl</li></li>
+  <li>configure sendmail<br>in /etc/mail/sendmail.mc:<ul>  
+  <li>change 'dnl MASQUERADE_AS('yourdomain.com')dnl' to the domain of your mail server</li>
+  <li>delete 'localhost' in 'DAEMON_OPTIONS('Port=smtp, Name=MTA')dnl'</li></li>
   <li>open SMTP / port 25 in iptables<br># iptables -A INPUT -p tcp --dport 25 -j ACCEPT</li>
   <li>run<br># ./ipmon.py</li></ol> 
   
