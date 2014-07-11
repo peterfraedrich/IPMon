@@ -1,4 +1,4 @@
-#!/usr/lib/python2.6
+#!/usr/bin/python
 
 
 # import stuff
