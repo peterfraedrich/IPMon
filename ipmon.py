@@ -181,10 +181,9 @@ def sendEmail(text, subject):
 
 	sender = 'alerts@networkmgmt.com'
 	recievers = recipiants
-	print recievers
 
 	message = """From: DNS Alerts <dnsalerts@networkmgmt.com>
-	To: alerts@networkmgmt.com
+	To: DNS Alerts <alerts@networkmgmt.com>
 	Subject: """ + subject + """\n""" + text + """ """
 
 	try:
