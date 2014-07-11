@@ -87,7 +87,7 @@ def checkAlive():
 	logadd('INFO -- began checking servers')
 	for i in server_list:
 		try:
-			ping = subprocess.Popen(["ping", "-n", "3", i], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			ping = subprocess.Popen(["ping", "-n", "3", server_list[i][1]], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			out, error = ping.communicate()
 			server_list[i][2] = 'up'
 			msg = 'PING CHECK -- domain ' + i + ' is UP.'
@@ -216,8 +216,8 @@ def serviceMain():
 		# main loop
 		while x == True:
 			importHosts() # imports hosts from either servers file or save file
-			checkAlive() # pings hosts to see if they're alive
 			dnslookup() # looks up dns to see if server has moved
+			checkAlive() # pings hosts to see if they're alive
 			saveServers() # save server data 
 			wait(300) # wait 10 minutes until the next iteration
 			datenowlong = int(datetime.datetime.now().strftime('%m%d%H%M')) # fix it for end of year 
