@@ -85,6 +85,8 @@ def refresh():
 
 def checkAlive():
 
+	### NOT BEING USED, FIX IN V2
+
 	logadd('INFO -- began checking servers')
 	for i in server_list:
 		ip = server_list[i][0]
@@ -234,7 +236,6 @@ def serviceMain():
 		while x == True:
 			importHosts() # imports hosts from either servers file or save file
 			dnslookup() # looks up dns to see if server has moved
-			checkAlive() # pings hosts to see if they're alive
 			saveServers() # save server data 
 			wait(300) # wait 10 minutes until the next iteration
 			datenowlong = int(datetime.datetime.now().strftime('%m%d%H%M')) # fix it for end of year 
