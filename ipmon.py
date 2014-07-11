@@ -8,6 +8,7 @@ import datetime
 import smtplib
 from os import stat
 import time
+import sys
 
 
 # define vars
@@ -137,6 +138,11 @@ def wait():
 
 
 def serviceMain():
+
+	
+	# check for cli args
+	if sys.argv[1] == '-r':
+		refresh()
 
 	while True:
 
