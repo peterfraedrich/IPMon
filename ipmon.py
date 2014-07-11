@@ -7,6 +7,7 @@ import subprocess
 import datetime
 import smtplib
 from os import stat
+from os import system
 import time
 import sys
 
@@ -86,7 +87,7 @@ def checkAlive():
 
 	logadd('INFO -- began checking servers')
 	for i in server_list:
-		response = os.system("ping -W 100 -c 3 " + server_list[i][1] + " > /dev/null 2>&1")
+		response = system("ping -W 100 -c 3 " + server_list[i][1] + " > /dev/null 2>&1")
         if response == 0:
 			server_list[i][2] = 'up'
 			msg = 'PING CHECK -- domain ' + i + ' is UP.'
