@@ -90,13 +90,13 @@ def checkAlive():
 			ping = subprocess.Popen(["ping", "-n", "3", i], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			out, error = ping.communicate()
 			server_list[i][2] = 'up'
-			msg = 'INFO -- domain ' + i + ' is UP.'
+			msg = 'PING CHECK -- domain ' + i + ' is UP.'
 			logadd(msg)
 
 		except subprocess.CalledProcessError:
 			server_list[i][2] = 'down'
 			notify(i, server_list[i][0], server_list[i][1], 'ping')
-			msg = 'WARN -- domain ' + i + ' is DOWN.'
+			msg = 'PING CHECK -- domain ' + i + ' is DOWN.'
 			logadd(msg)
 
 
@@ -105,18 +105,19 @@ def dnslookup():
 	logadd('INFO -- begin DNS lookups')
 	for i in server_list:
 		try:
+			wait(3)
 			ip = socket.gethostbyname(i)
 			oldip = server_list[i][1]
 			server_list[i][0] = ip
-			msg = 'INFO -- ' + i + ' resolves to ' + ip 
-			logfile(msg)
+			msg = 'DNS RESOLVE -- ' + i + ' resolves to ' + ip 
+			logadd(msg)
 			if server_list[i][0] != server_list[i][1]:
 				if server_list[i][1] != '':
 					notify(i, server_list[i][0], server_list[i][1], 'change')
-					msg = 'WARN -- domain ' + i + 'changed IP address to ' + server_list[i][0]
+					msg = ' DNS WARN -- domain ' + i + 'changed IP address to ' + server_list[i][0]
 					logadd(msg)
 							
-		except:
+		except socket.gaierror:
 			notify(i, 'null', 'null', 'resolve')
 			
 
@@ -145,7 +146,7 @@ def notify(url, newip, oldip, event):
 		subject = url + " could not be resolved."
 		#do the email message thing
 		sendEmail(message, subject)
-		msg = 'WARN -- domain ' + url + ' could not be resolved'
+		msg = 'DNS WARN -- domain ' + url + ' could not be resolved'
 		logadd(msg)
 
 
@@ -181,8 +182,8 @@ def saveServers():
 	logadd('INFO -- servers save to save file')
 
 
-def wait():
-	time.sleep(600)
+def wait(sec):
+	time.sleep(int(sec))
 
 
 def serviceMain():
@@ -210,7 +211,7 @@ def serviceMain():
 			checkAlive() # pings hosts to see if they're alive
 			dnslookup() # looks up dns to see if server has moved
 			saveServers() # save server data 
-			wait() # wait 10 minutes until the next iteration
+			wait(30) # wait 10 minutes until the next iteration
 			datenowlong = int(datetime.datetime.now().strftime('%m%d%H%M')) # fix it for end of year 
 			datenowshort = int(datetime.datetime.now().strftime('%m%d')) 
 			if datenowlong < 12312340: # EOY fix
