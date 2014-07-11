@@ -88,12 +88,12 @@ def checkAlive():
 	for i in server_list:
 		response = os.system("ping -W 100 -c 3 " + server_list[i][1] + " > /dev/null 2>&1")
         if response == 0:
-    	    server_list[i][2] = 'up'
+			server_list[i][2] = 'up'
 			msg = 'PING CHECK -- domain ' + i + ' is UP.'
 			logadd(msg)
 			print msg        
         else:
-        	server_list[i][2] = 'down'
+			server_list[i][2] = 'down'
 			notify(i, server_list[i][0], server_list[i][1], 'ping')
 			msg = 'PING CHECK -- domain ' + i + ' is DOWN.'
 			logadd(msg)
