@@ -134,12 +134,12 @@ def dnslookup():
 			logadd(msg)
 			print msg
 			if server_list[i][0] != server_list[i][1]:
-				if server_list[i][1] != '':
-					notify(i, server_list[i][0], server_list[i][1], 'change')
-					msg = ' DNS WARN -- domain ' + i + 'changed IP address to ' + server_list[i][0]
-					logadd(msg)
-					print msg
-							
+				#if server_list[i][1] != '':
+				notify(i, server_list[i][0], server_list[i][1], 'change')
+				msg = ' DNS WARN -- domain ' + i + 'changed IP address to ' + server_list[i][0]
+				logadd(msg)
+				print msg
+						
 		except socket.gaierror:
 			notify(i, 'null', 'null', 'resolve')
 			
