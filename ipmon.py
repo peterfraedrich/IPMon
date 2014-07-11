@@ -16,6 +16,11 @@ server_list = {}
 recipiants = []
 x = False
 
+def savefile():
+	save = open('./save', 'w')
+	save.close()
+
+savefile()
 
 # define functions
 def lognew():
