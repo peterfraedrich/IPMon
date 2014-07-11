@@ -89,7 +89,7 @@ def checkAlive():
 	for i in server_list:
 		ip = server_list[i][0]
 		print ip
-		response = system('ping -W 100 -c 3 ' + ip) # + " > /dev/null 2>&1")
+		response = system('ping -W 100 -c 3 ' + ip + " > /dev/null 2>&1")
         if response == 0:
 			server_list[i][2] = 'up'
 			msg = 'PING CHECK -- domain ' + i + ' is UP.'
