@@ -1,0 +1,12 @@
+2014/07/11 10:52:26 : INFO -- refreshed the server_list dict
+2014/07/11 10:52:26 : INFO -- imported save file into server_list dict
+2014/07/11 10:52:26 : INFO -- began checking servers
+2014/07/11 10:52:28 : INFO -- domain support.networkmgmt.com is UP.
+2014/07/11 10:52:41 : INFO -- domain www.networkmgmt.com is UP.
+2014/07/11 10:52:41 : INFO -- domain www.netmaninc.com is UP.
+2014/07/11 10:52:50 : INFO -- domain mail.netmaninc.com is UP.
+2014/07/11 10:52:50 : INFO -- begin DNS lookups
+2014/07/11 10:52:50 : INFO -- imported recipiant email addresses into recipiants list obj
+2014/07/11 10:52:50 : INFO -- Notification email sent
+2014/07/11 10:52:50 : WARN -- domain www.netmaninc.com could not be resolved
+2014/07/11 10:52:50 : INFO -- servers save to save file

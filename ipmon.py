@@ -18,6 +18,27 @@ x = False
 
 
 # define functions
+def lognew():
+	filename = './logfile' + datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+	log = open('./logfile', 'r')
+	oldlog = open(filename, 'w')
+	for i in log:
+		oldlog.write(i)
+
+	oldlog.close()
+	log.close()
+	log = open('./logfile', 'w')
+	log.close()
+
+
+def logadd(msg):
+
+	ts = str(datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'))
+	log = open('./logfile', 'a')
+	log.write(ts + " : " + str(msg) + '\n')
+	log.close()
+
+
 def importHosts():
 
 	save = open('./save', 'r')
@@ -27,16 +48,15 @@ def importHosts():
 		for i in servers:
 			a = str(i).strip('\n')
 			server_list[a] = ['','','']
-			print a
 		saveServers()
+		logadd('INFO -- got new hosts from servers file')
 	else:
 		servers = open('./save', 'r')
 		for i in servers:
 			a = []
 			a = str(i).strip('\n').split(',')
 			server_list[a[0]] = [a[1], a[2], a[3]]
-
-	print server_list #debug
+		logadd('INFO -- imported save file into server_list dict')
 
 
 def importRecipiants():
@@ -44,6 +64,7 @@ def importRecipiants():
 	emails = open('./recipiants', 'r')
 	for i in emails:
 		recipiants.append(str(i).strip('\n'))
+	logadd('INFO -- imported recipiant email addresses into recipiants list obj')
 
 
 def refresh():
@@ -53,35 +74,43 @@ def refresh():
 	for i in servers:
 		a = str(i).strip('\n')
 		server_list[a] = ['','','']
+	logadd('INFO -- refreshed the server_list dict')
 
 
 def checkAlive():
 
+	logadd('INFO -- began checking servers')
 	for i in server_list:
-		print i #debug
 		try:
 			ping = subprocess.Popen(["ping", "-n", "3", i], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			out, error = ping.communicate()
 			server_list[i][2] = 'up'
+			msg = 'INFO -- domain ' + i + ' is UP.'
+			logadd(msg)
 
 		except subprocess.CalledProcessError:
 			server_list[i][2] = 'down'
 			notify(i, server_list[i][0], server_list[i][1], 'ping')
-
-	print server_list #debug
+			msg = 'WARN -- domain ' + i + ' is DOWN.'
+			logadd(msg)
 
 
 def dnslookup():
 
+	logadd('INFO -- begin DNS lookups')
 	for i in server_list:
-		ip = socket.gethostbyname(i)
-		oldip = server_list[i][1]
-		server_list[i][0] = ip
-		if server_list[i][0] != server_list[i][1]:
-			if server_list[i][1] != '':
-				notify(i, server_list[i][0], server_list[i][1], 'change')
-
-	print server_list #debug
+		try:
+			ip = socket.gethostbyname(i)
+			oldip = server_list[i][1]
+			server_list[i][0] = ip
+			if server_list[i][0] != server_list[i][1]:
+				if server_list[i][1] != '':
+					notify(i, server_list[i][0], server_list[i][1], 'change')
+					msg = 'WARN -- domain ' + i + 'changed IP address to ' + server_list[i][0]
+					logadd(msg)
+		except:
+			notify(i, 'null', 'null', 'resolve')
+			
 
 
 def notify(url, newip, oldip, event):
@@ -91,14 +120,25 @@ def notify(url, newip, oldip, event):
 		subject = url + " is not responding."
 		# do the email message thing
 		sendEmail(message, subject)
+		msg = 'NOTIFY -- ' + "Server " + url + " at " + newip + " is not responding."
+		logadd(msg)
 
 	if event == 'change':
 		message = "Server " + url + " has new IP at " + newip + ". Old IP was " + oldip + "\n" + "TIMESTAMP: " + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 		subject = url + " has a new IP address."
 		#do the email message thing
 		sendEmail(message, subject)
-
+		msg = 'NOTIFY -- ' + "Server " + url + " has new IP at " + newip + ". Old IP was " + oldip
+		logadd(msg)
 		server_list[url][1] = server_list[url][0]
+
+	if event == 'resolve':
+		message = "Server " + url + " could not be resolved" + "\n" + "TIMESTAMP: " + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+		subject = url + " could not be resolved."
+		#do the email message thing
+		sendEmail(message, subject)
+		msg = 'WARN -- domain ' + url + ' could not be resolved'
+		logadd(msg)
 
 
 def sendEmail(text, subject):
@@ -117,10 +157,9 @@ def sendEmail(text, subject):
 	try:
 		smtpObj = smtplib.SMTP('localhost') 
 		smtpObj.sendmail(sender, recievers, message)
-		print "sent email"
-		print recipiants
+		logadd('INFO -- Notification email sent')
 	except:
-		print "unable to send email"
+		logadd('ERROR -- unable to send mail')
 
 
 def saveServers():
@@ -131,6 +170,7 @@ def saveServers():
 		savefile.write(i + "," + server_list[i][0] + "," + server_list[i][1] + "," + server_list[i][2] + '\n')
 
 	savefile.close()
+	logadd('INFO -- servers save to save file')
 
 
 def wait():
@@ -139,14 +179,20 @@ def wait():
 
 def serviceMain():
 
+	logadd('STARTUP -- the app started up OK')
+	print 'IPMon is now running.'
 	
 	# check for cli args
-	if sys.argv[1] == '-r':
-		refresh()
+	if len(sys.argv) < 1:
+		if sys.argv[1] == '-r':
+			refresh()
+			logadd('INFO -- user refresh')
 
 	while True:
 
 		lastrun = int(datetime.datetime.now().strftime('%m%d')) # set date for last time this ran
+		lognew()
+		refresh()
 
 		x = True # make sure loops runs
 
@@ -161,11 +207,11 @@ def serviceMain():
 			datenowshort = int(datetime.datetime.now().strftime('%m%d')) 
 			if datenowlong < 12312340: # EOY fix
 				if lastrun < datenowshort: # if next day, exit loop for host refresh
-					print 'exiting loop'
+					logadd('INFO -- exited loop to refresh')
 					x = False
 			else:
-				print 'refreshing'
 				refresh() # end of year refresh
+				logadd('INFO -- exited loop for EOY refresh')
 
 
 ######## MAIN SERVICE ########################
