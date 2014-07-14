@@ -25,16 +25,20 @@ savefile()
 
 # define functions
 def lognew():
-	filename = './logfile' + datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+	filename = './logfile-' + datetime.datetime.now().strftime('%Y%m%d')
 	log = open('./logfile', 'r')
-	oldlog = open(filename, 'w')
-	for i in log:
-		oldlog.write(i)
-
-	oldlog.close()
-	log.close()
-	log = open('./logfile', 'w')
-	log.close()
+	with open('./logfile','r') as f:
+		header = f.readline().strip('\n')
+	# if the log isn't made on the same day as the previous, make a new one
+	if header != datetime.datetime.now().strftime('%Y%m%d'):
+		oldlog = open(filename, 'w')
+		for i in log:
+			oldlog.write(i)
+		oldlog.close()
+		log.close()
+		log = open('./logfile', 'w')
+		log.write(datetime.datetime.now().strftime('%Y%m%d'))
+		log.close()
 
 
 def logadd(msg):
