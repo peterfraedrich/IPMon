@@ -1,7 +1,8 @@
 #!/usr/bin/python
 
+######### #import stuff
+#######################
 
-# import stuff
 import socket
 import subprocess
 import datetime
@@ -12,18 +13,26 @@ import time
 import sys
 
 
-# define vars
+########## define vars
+######################
+
 server_list = {}
 recipiants = []
 x = False
 
+
+##### define functions
+######################
+
+# writes variables to file for later
 def savefile():
 	save = open('./save', 'w')
 	save.close()
 
 savefile()
 
-# define functions
+
+# creates new logs if necessary
 def lognew():
 	filename = './logfile-' + datetime.datetime.now().strftime('%Y%m%d')
 	log = open('./logfile', 'r')
@@ -41,6 +50,7 @@ def lognew():
 		log.close()
 
 
+# writes messages to the logs
 def logadd(msg):
 
 	ts = str(datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S'))
@@ -49,6 +59,7 @@ def logadd(msg):
 	log.close()
 
 
+# imports server names from the 'servers' file
 def importHosts():
 
 	save = open('./save', 'r')
@@ -69,6 +80,7 @@ def importHosts():
 		logadd('INFO -- imported save file into server_list dict')
 
 
+# imports the email addresses to send notifications to
 def importRecipiants():
 
 	emails = open('./recipiants', 'r')
@@ -77,6 +89,7 @@ def importRecipiants():
 	logadd('INFO -- imported recipiant email addresses into recipiants list obj')
 
 
+# refreshes servers dictionary with servers in servers file
 def refresh():
 
 	servers = open('./servers', 'r')
@@ -87,44 +100,46 @@ def refresh():
 	logadd('INFO -- refreshed the server_list dict')
 
 
-def checkAlive():
+# checks to see if hosts are up and respond to ICMP (NOT WORKING)
+# def checkAlive():
+#
+#	### NOT BEING USED, FIX IN V2
+#
+#	logadd('INFO -- began checking servers')
+#	for i in server_list:
+#		ip = server_list[i][0]
+#		print ip
+#		response = system('ping -W 100 -c 1 ' + ip + " > /dev/null 2>&1")
+#       if response == 0:
+#			server_list[i][2] = 'up'
+#			msg = 'PING CHECK -- domain ' + i + ' is UP.'
+#			logadd(msg)
+#			print msg        
+#        else:
+#			server_list[i][2] = 'down'
+#			notify(i, server_list[i][0], server_list[i][1], 'ping')
+#			msg = 'PING CHECK -- domain ' + i + ' is DOWN.'
+#			logadd(msg)
+#			print msg
+#            
+#
+#		try:
+#			ping = subprocess.Popen(["ping", "-n", "3", server_list[i][1]], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+#			out, error = ping.communicate()
+#			server_list[i][2] = 'up'
+#			msg = 'PING CHECK -- domain ' + i + ' is UP.'
+#			logadd(msg)
+#			print msg
+#	
+#		except: #subprocess.CalledProcessError:
+#			server_list[i][2] = 'down'
+#			notify(i, server_list[i][0], server_list[i][1], 'ping')
+#			msg = 'PING CHECK -- domain ' + i + ' is DOWN.'
+#			logadd(msg)
+#			print msg
 
-	### NOT BEING USED, FIX IN V2
 
-	logadd('INFO -- began checking servers')
-	for i in server_list:
-		ip = server_list[i][0]
-		print ip
-		response = system('ping -W 100 -c 1 ' + ip + " > /dev/null 2>&1")
-        if response == 0:
-			server_list[i][2] = 'up'
-			msg = 'PING CHECK -- domain ' + i + ' is UP.'
-			logadd(msg)
-			print msg        
-        else:
-			server_list[i][2] = 'down'
-			notify(i, server_list[i][0], server_list[i][1], 'ping')
-			msg = 'PING CHECK -- domain ' + i + ' is DOWN.'
-			logadd(msg)
-			print msg
-            
-
-	#	try:
-	#		ping = subprocess.Popen(["ping", "-n", "3", server_list[i][1]], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	#		out, error = ping.communicate()
-	#		server_list[i][2] = 'up'
-	#		msg = 'PING CHECK -- domain ' + i + ' is UP.'
-	#		logadd(msg)
-	#		print msg
-	#
-	#	except: #subprocess.CalledProcessError:
-	#		server_list[i][2] = 'down'
-	#		notify(i, server_list[i][0], server_list[i][1], 'ping')
-	#		msg = 'PING CHECK -- domain ' + i + ' is DOWN.'
-	#		logadd(msg)
-	#		print msg
-
-
+# performs the DNS lookup to see if the IP's have changed.
 def dnslookup():
 
 	logadd('INFO -- begin DNS lookups')
@@ -147,7 +162,7 @@ def dnslookup():
 			notify(i, 'null', 'null', 'resolve')
 			
 
-
+# formats the notifications for e-mail sendingness
 def notify(url, newip, oldip, event):
 
 	if event == 'ping':
@@ -179,6 +194,7 @@ def notify(url, newip, oldip, event):
 		print msg
 
 
+# sends the email notifications
 def sendEmail(text, subject):
 
 	importRecipiants()
@@ -199,6 +215,7 @@ def sendEmail(text, subject):
 		print 'ERROR -- unable to send mail'
 
 
+# saves the servers to the save file
 def saveServers():
 
 	savefile = open("./save", 'w')
@@ -210,10 +227,12 @@ def saveServers():
 	logadd('INFO -- servers save to save file')
 
 
+# wait
 def wait(sec):
 	time.sleep(int(sec))
 
 
+# main service that calls all the other functions
 def serviceMain():
 
 	logadd('STARTUP -- the app started up OK')
@@ -226,9 +245,9 @@ def serviceMain():
 			logadd('INFO -- user refresh')
 
 	while True:
-
+		# sets when the thing was run last, for the Y2K fix
 		lastrun = int(datetime.datetime.now().strftime('%m%d')) # set date for last time this ran
-		lognew()
+		lognew() # makes a new log
 
 		x = True # make sure loops runs
 
@@ -239,11 +258,11 @@ def serviceMain():
 			saveServers() # save server data 
 			wait(300) # wait 10 minutes until the next iteration
 			datenowlong = int(datetime.datetime.now().strftime('%m%d%H%M')) # fix it for end of year 
-			datenowshort = int(datetime.datetime.now().strftime('%m%d')) 
+			datenowshort = int(datetime.datetime.now().strftime('%m%d')) # short version of the time right now 
 			if datenowlong < 12312340: # EOY fix
 				if lastrun < datenowshort: # if next day, exit loop for host refresh
 					logadd('INFO -- exited loop to refresh')
-					x = False
+					x = False # makes it so we exit the loop
 			else:
 				refresh() # end of year refresh
 				logadd('INFO -- exited loop for EOY refresh')
