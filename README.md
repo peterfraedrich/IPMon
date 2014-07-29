@@ -16,10 +16,11 @@ a simple Python IP monitor and notifier
   <h1>Install Instructions</h1>
   <ol><li>clone the git repo into root (/)</li>
   <br># git clone https://github.com/peterfraedrich/IPMon.git
-  <li>install sendmail<br># yum install -y sendmail</li>
+  <li>install sendmail<br># yum install -y sendmail sendmail-cf</li>
   <li>configure sendmail<br>in /etc/mail/sendmail.mc:<ul>  
-  <li>change 'dnl MASQUERADE_AS('yourdomain.com')dnl' to the domain of your mail server</li>
-  <li>delete 'localhost' in 'DAEMON_OPTIONS('Port=smtp, Name=MTA')dnl'</li></li>
+  <li>change 'dnl MASQUERADE_AS('mydomain.com')dnl' to the domain of your mail server</li>
+  <li>delete 'localhost' or '127.0.0.1' in 'DAEMON_OPTIONS('Port=smtp, Name=MTA')dnl'</li></li>
   <li>open SMTP / port 25 in iptables<br># iptables -A INPUT -p tcp --dport 25 -j ACCEPT</li>
-  <li>run<br># ./ipmon.py</li></ol> 
+  <li>make ipmon.py executable - # chmod +x ipmon.py</li>
+  <li>run<br># nohup ./ipmon.py &</li></ol> 
   
