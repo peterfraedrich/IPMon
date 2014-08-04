@@ -222,6 +222,7 @@ def serviceMain():
 
 		# main loop
 		while x == True:
+			logclean() # deletes up the logs older than 60 days
 			importHosts() # imports hosts from either servers file or save file
 			dnslookup() # looks up dns to see if server has moved
 			saveServers() # save server data 
