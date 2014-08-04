@@ -25,6 +25,7 @@ server_list = {}
 recipiants = []
 x = False
 path = dirname(__file__)
+datenow = datetime.datetime.now().timetuple.tm_yday
 
 
 ##### define functions
