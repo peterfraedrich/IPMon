@@ -19,6 +19,7 @@ import sys
 server_list = {}
 recipiants = []
 x = False
+path = dirname(__file__)
 
 
 ##### define functions
@@ -49,6 +50,13 @@ def lognew():
 		log.write(datetime.datetime.now().strftime('%Y%m%d'))
 		log.close()
 
+def logclean(): # deletes logs that are more than 60 days old
+	files = [ f for f in listdir(path) if isfile(join(path,f)) ]
+	for i in files:
+		if "logfile-" in i:
+			mtime = strptime(i[8:],'%Y%m%d')
+			if mtime.tm_yday < (datenow - 60):
+				remove(i)
 
 # writes messages to the logs
 def logadd(msg):
@@ -98,45 +106,6 @@ def refresh():
 		a = str(i).strip('\n')
 		server_list[a] = ['null','null','']
 	logadd('INFO -- refreshed the server_list dict')
-
-
-# checks to see if hosts are up and respond to ICMP (NOT WORKING)
-# def checkAlive():
-#
-#	### NOT BEING USED, FIX IN V2
-#
-#	logadd('INFO -- began checking servers')
-#	for i in server_list:
-#		ip = server_list[i][0]
-#		print ip
-#		response = system('ping -W 100 -c 1 ' + ip + " > /dev/null 2>&1")
-#       if response == 0:
-#			server_list[i][2] = 'up'
-#			msg = 'PING CHECK -- domain ' + i + ' is UP.'
-#			logadd(msg)
-#			print msg        
-#        else:
-#			server_list[i][2] = 'down'
-#			notify(i, server_list[i][0], server_list[i][1], 'ping')
-#			msg = 'PING CHECK -- domain ' + i + ' is DOWN.'
-#			logadd(msg)
-#			print msg
-#            
-#
-#		try:
-#			ping = subprocess.Popen(["ping", "-n", "3", server_list[i][1]], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-#			out, error = ping.communicate()
-#			server_list[i][2] = 'up'
-#			msg = 'PING CHECK -- domain ' + i + ' is UP.'
-#			logadd(msg)
-#			print msg
-#	
-#		except: #subprocess.CalledProcessError:
-#			server_list[i][2] = 'down'
-#			notify(i, server_list[i][0], server_list[i][1], 'ping')
-#			msg = 'PING CHECK -- domain ' + i + ' is DOWN.'
-#			logadd(msg)
-#			print msg
 
 
 # performs the DNS lookup to see if the IP's have changed.
@@ -257,15 +226,14 @@ def serviceMain():
 			dnslookup() # looks up dns to see if server has moved
 			saveServers() # save server data 
 			wait(300) # wait 10 minutes until the next iteration
-			datenowlong = int(datetime.datetime.now().strftime('%m%d%H%M')) # fix it for end of year 
-			datenowshort = int(datetime.datetime.now().strftime('%m%d')) # short version of the time right now 
-			if datenowlong < 12312340: # EOY fix
-				if lastrun < datenowshort: # if next day, exit loop for host refresh
+			yday = datetime.datetime.now().timetuple().tm_yday # fix it for end of year 
+			if yday < datetime.datetime.now().timetuple().tm_yday: # EOY fix
+				if datetime.datetime.now().timetuple().tm_yday < 365: # if next day, exit loop for host refresh
 					logadd('INFO -- exited loop to refresh')
 					x = False # makes it so we exit the loop
-			else:
-				refresh() # end of year refresh
-				logadd('INFO -- exited loop for EOY refresh')
+				else:
+					refresh() # end of year refresh
+					logadd('INFO -- exited loop for EOY refresh')
 
 
 ######## MAIN SERVICE ########################
