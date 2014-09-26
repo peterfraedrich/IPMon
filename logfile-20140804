@@ -1,0 +1,10 @@
+201408042014/08/04 11:25:44 : INFO -- servers save to save file
+2014/08/04 11:25:44 : INFO -- got new hosts from servers file
+2014/08/04 11:25:44 : INFO -- begin DNS lookups
+2014/08/04 11:25:47 : DNS RESOLVE -- mail.netmaninc.com resolves to 68.238.163.252
+2014/08/04 11:25:47 : INFO -- imported recipiant email addresses into recipiants list obj
+2014/08/04 11:25:47 : INFO -- Notification email sent
+2014/08/04 11:25:47 : NOTIFY -- Server mail.netmaninc.com has new IP at 68.238.163.252. Old IP was 
+2014/08/04 11:25:47 : DNS WARN -- domain mail.netmaninc.com changed IP address to 68.238.163.252
+2014/08/04 11:25:47 : INFO -- servers save to save file
+2014/08/04 11:25:59 : STARTUP -- the app started up OK

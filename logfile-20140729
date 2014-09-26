@@ -1,0 +1,38 @@
+201407292014/07/29 10:13:22 : INFO -- servers save to save file
+2014/07/29 10:13:22 : INFO -- got new hosts from servers file
+2014/07/29 10:13:22 : INFO -- begin DNS lookups
+2014/07/29 10:13:25 : DNS RESOLVE -- mail.netmaninc.com resolves to 98.175.96.147
+2014/07/29 10:13:25 : INFO -- imported recipiant email addresses into recipiants list obj
+2014/07/29 10:13:25 : INFO -- Notification email sent
+2014/07/29 10:13:25 : NOTIFY -- Server mail.netmaninc.com has new IP at 98.175.96.147. Old IP was 
+2014/07/29 10:13:25 : DNS WARN -- domain mail.netmaninc.com changed IP address to 98.175.96.147
+2014/07/29 10:13:25 : INFO -- servers save to save file
+2014/07/29 10:18:26 : INFO -- imported save file into server_list dict
+2014/07/29 10:18:26 : INFO -- begin DNS lookups
+2014/07/29 10:18:29 : DNS RESOLVE -- mail.netmaninc.com resolves to 98.175.96.147
+2014/07/29 10:18:29 : INFO -- servers save to save file
+2014/07/29 10:23:29 : INFO -- imported save file into server_list dict
+2014/07/29 10:23:29 : INFO -- begin DNS lookups
+2014/07/29 10:23:37 : DNS RESOLVE -- mail.netmaninc.com resolves to 10.10.10.4
+2014/07/29 10:23:37 : INFO -- imported recipiant email addresses into recipiants list obj
+2014/07/29 10:23:37 : INFO -- Notification email sent
+2014/07/29 10:23:37 : NOTIFY -- Server mail.netmaninc.com has new IP at 10.10.10.4. Old IP was 98.175.96.147
+2014/07/29 10:23:37 : DNS WARN -- domain mail.netmaninc.com changed IP address to 10.10.10.4
+2014/07/29 10:23:37 : INFO -- servers save to save file
+2014/07/29 10:28:37 : INFO -- imported save file into server_list dict
+2014/07/29 10:28:37 : INFO -- begin DNS lookups
+2014/07/29 10:28:40 : DNS RESOLVE -- mail.netmaninc.com resolves to 10.10.10.4
+2014/07/29 10:28:40 : INFO -- servers save to save file
+2014/07/29 10:33:40 : INFO -- imported save file into server_list dict
+2014/07/29 10:33:40 : INFO -- begin DNS lookups
+2014/07/29 10:33:43 : DNS RESOLVE -- mail.netmaninc.com resolves to 10.10.10.4
+2014/07/29 10:33:43 : INFO -- servers save to save file
+2014/07/29 10:38:43 : INFO -- imported save file into server_list dict
+2014/07/29 10:38:43 : INFO -- begin DNS lookups
+2014/07/29 10:38:46 : DNS RESOLVE -- mail.netmaninc.com resolves to 10.10.10.4
+2014/07/29 10:38:46 : INFO -- servers save to save file
+2014/07/29 10:43:46 : INFO -- imported save file into server_list dict
+2014/07/29 10:43:46 : INFO -- begin DNS lookups
+2014/07/29 10:43:49 : DNS RESOLVE -- mail.netmaninc.com resolves to 10.10.10.4
+2014/07/29 10:43:49 : INFO -- servers save to save file
+2014/07/29 10:48:54 : STARTUP -- the app started up OK
